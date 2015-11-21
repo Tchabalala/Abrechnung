@@ -115,5 +115,27 @@ namespace SqlLib
             return dsRet;
         }
         #endregion
+        #region ExecuteStoredProcedure
+        public static void ExecuteStoredProcedure(string procname, List<SqlParameter> sqlparams = null)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand(procname, _sqlconn);
+                if (sqlparams != null && sqlparams.Count > 0)
+                {
+                    foreach (SqlParameter sqlparam in sqlparams)
+                    {
+                        command.Parameters.Add(sqlparam);
+                    }
+                }
+                command.CommandType = CommandType.StoredProcedure;
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message, "Fehler beim Aufruf der gespeicherten Prozedur");
+            }
+        }
+        #endregion
     }
 }
